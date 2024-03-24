@@ -1,0 +1,7 @@
+pydub
+numpy
+librosa
+scikit-learn
+keras
+xgboost
+tensorflow

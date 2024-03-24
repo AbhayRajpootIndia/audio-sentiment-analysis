@@ -23,7 +23,7 @@ from xgboost import XGBClassifier
 
 #config for models:
 epochsModel1 = 20
-epochsModel2 = 2000
+epochsModel2 = 10
 
 mslen = 22050
 
@@ -159,15 +159,17 @@ model2.add(Dense(y_train.shape[1],kernel_initializer='normal',activation ='softm
 
 model2.compile(loss = 'categorical_crossentropy',optimizer='adadelta',metrics=['accuracy'])
 
-model2.fit(X_train,y_train,epochs=epochsModel2,batch_size = 5,verbose=1)
+model2.load_weights("mlp_tanh_adadelta_model.weights.h5")
+
+# un comment this and comment the above line to train a new model:
+# model2.fit(X_train,y_train,epochs=epochsModel2,batch_size = 5,verbose=1)
 
 model2.evaluate(X_test, y_test)
 
-
 mlp_model2 = model2.to_json()
-with open('mlp_model_tanh_adadelta.json','w') as j:
-    j.write(mlp_model2)
-model2.save_weights("mlp_tanh_adadelta_model.weights.h5")
+# with open('mlp_model_tanh_adadelta.json','w') as j:
+#     j.write(mlp_model2)
+# model2.save_weights("mlp_tanh_adadelta_model.weights.h5")
 
 
 y_pred_model2 = model2.predict(X_test)
@@ -223,7 +225,7 @@ feature_all = np.vstack([feature_all,features])
 x_chunk = np.array(features)
 x_chunk = x_chunk.reshape(1,np.shape(x_chunk)[0])
 
-y_chunk_model1 = model.predict(x_chunk)
+y_chunk_model1 = model2.predict(x_chunk)
 
 index = np.argmax(y_chunk_model1)
 
